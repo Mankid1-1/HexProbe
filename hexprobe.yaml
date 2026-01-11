@@ -1,0 +1,22 @@
+# HexProbe pipeline configuration
+pipeline:
+  - name: surface_sweep
+    stage: probes.static.surface_sweep
+    fail_on: high
+  - name: fuzz_probe
+    stage: probes.fuzz.fuzz_probe
+    fail_on: critical
+  - name: perf_probe
+    stage: probes.perf.perf_probe
+    fail_on: high
+  - name: chaos_probe
+    stage: probes.perf.chaos
+    fail_on: critical
+
+agents:
+  - architect
+  - fuzz
+  - forensic
+  - scale
+  - edge
+  - automation

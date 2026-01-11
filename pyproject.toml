@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "hexprobe"
+version = "1.0.0"
+description = "Multi-agent self-evolving repo auditing system"
+authors = ["HexProbe Team"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"

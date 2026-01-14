@@ -9,6 +9,16 @@ ProbeRunner = Callable[[str], Any]
 
 
 def agent_profiles() -> List[Dict[str, Any]]:
+    """
+    Collects public profile information for every registered agent.
+    
+    Each profile is a dictionary with keys:
+    - `name`: the agent's name.
+    - `domains`: a list of domains associated with the agent, or an empty list if the agent has no `domains` attribute.
+    
+    Returns:
+        profiles (List[Dict[str, Any]]): List of agent profile dictionaries.
+    """
     profiles = []
     for agent in ALL_AGENTS:
         profiles.append({
@@ -19,6 +29,18 @@ def agent_profiles() -> List[Dict[str, Any]]:
 
 
 def probe_registry() -> Dict[str, Dict[str, Any]]:
+    """
+    Return a registry mapping probe identifiers to their metadata.
+    
+    Each entry maps a probe id to a dict containing:
+    - "name": human-friendly probe name
+    - "description": brief explanation of the probe's purpose
+    - "runner": a callable that accepts a repository path (str) and returns the probe result
+    - "supports_artifacts": boolean indicating whether the probe accepts artifact inputs
+    
+    Returns:
+        Dict[str, Dict[str, Any]]: Mapping from probe identifier to its metadata dictionary.
+    """
     return {
         "quick_scan": {
             "name": "Quick Inventory",

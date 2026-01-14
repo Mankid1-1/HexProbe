@@ -8,6 +8,15 @@ SEVERITY_ORDER = ["info", "low", "medium", "high", "critical"]
 
 
 def _severity_for_findings(findings: List[Finding]) -> str:
+    """
+    Compute the most severe severity level present in a list of findings.
+    
+    Parameters:
+        findings (List[Finding]): Findings to evaluate for overall severity.
+    
+    Returns:
+        severity (str): The severity string with the highest rank according to SEVERITY_ORDER; returns "info" if `findings` is empty.
+    """
     if not findings:
         return "info"
     return max((f.severity for f in findings), key=lambda s: SEVERITY_ORDER.index(s))
@@ -15,7 +24,16 @@ def _severity_for_findings(findings: List[Finding]) -> str:
 
 def run(repo: str, artifacts=None):
     """
-    Quick inventory and heuristics probe.
+    Perform a lightweight audit of a repository and produce probe findings describing structure, inventory, and hygiene.
+    
+    The probe verifies the repository path, checks for a README.md at the root, scans up to 500 files to count file extensions and detect occurrences of TODO/FIXME in text-like files, and then emits Findings (as dictionaries) summarizing missing README, TODO/FIXME volume, top file types, or an empty repository. The overall severity is computed from the collected findings.
+    
+    Parameters:
+        repo (str): Path to the repository root to scan.
+        artifacts (optional): Ignored by this probe; present for interface compatibility.
+    
+    Returns:
+        ProbeResult: Object containing `findings` (list of finding dictionaries) and `severity` (one of SEVERITY_ORDER).
     """
     repo_path = Path(repo)
     findings: List[Finding] = []

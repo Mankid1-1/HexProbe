@@ -25,5 +25,16 @@ HexProbe is a **self-evolving, multi-agent repository auditing system** designed
 
 1. Clone the repo
 2. Install dependencies (e.g., Python 3.10+)
-3. Configure `hexprobe.yaml` for your pipeline
-4. Run orchestration via `core/synthesis.py`
+3. Configure Appwrite variables in `.env` (see `.env.example`)
+4. Configure `hexprobe.yaml` for your pipeline
+5. Run orchestration via `core/synthesis.py`
+
+## Appwrite Configuration
+
+HexProbe uses Appwrite for backend services. Configure the following environment
+variables (copy `.env.example` to `.env` and update as needed):
+
+- `APPWRITE_ENDPOINT`
+- `APPWRITE_PROJECT_ID`
+- `APPWRITE_DATABASE_ID`
+- `APPWRITE_API_KEY` (server-only secret; never commit)

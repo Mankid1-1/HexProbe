@@ -1,15 +1,17 @@
-import sqlite3
 import os
+import sqlite3
+
+from core.appwrite_backend import init_knowledge_schema
 
 DB_PATH = os.path.join(os.getcwd(), "hexprobe_knowledge.db")
 
 def get_conn():
-    conn = sqlite3.connect(DB_PATH)
-    return conn
-
-conn = get_conn()
+    return sqlite3.connect(DB_PATH)
 
 def init_db():
+    if init_knowledge_schema():
+        return
+    conn = get_conn()
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS patterns (
@@ -31,5 +33,6 @@ def init_db():
         created_at TEXT
     )""")
     conn.commit()
+    conn.close()
 
 init_db()

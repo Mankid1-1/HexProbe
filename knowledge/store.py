@@ -1,3 +1,4 @@
+import logging
 import os
 import sqlite3
 
@@ -5,13 +6,18 @@ from core.appwrite_backend import init_knowledge_schema
 
 DB_PATH = os.path.join(os.getcwd(), "hexprobe_knowledge.db")
 
+logger = logging.getLogger(__name__)
+
 def get_conn():
     return sqlite3.connect(DB_PATH)
 
 conn = get_conn()
 
 def init_db():
-    init_knowledge_schema()
+    try:
+        init_knowledge_schema()
+    except Exception:
+        logger.exception("Failed to initialize Appwrite knowledge schema.")
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS patterns (

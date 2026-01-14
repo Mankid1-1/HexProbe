@@ -29,6 +29,16 @@ HexProbe is a **self-evolving, multi-agent repository auditing system** designed
 4. Configure `hexprobe.yaml` for your pipeline
 5. Run orchestration via `core/synthesis.py`
 
+## Web App (Mission Control)
+
+HexProbe now includes a lightweight Flask UI to coordinate probe runs across the team.
+
+1. Install dependencies via Poetry (or pip):
+   - `poetry install`
+2. Launch the web app:
+   - `python -m webapp.app`
+3. Open `http://localhost:8000` to register repos, run probes, and review agent approvals.
+
 ## Appwrite Configuration
 
 HexProbe uses Appwrite for backend services. Configure the following environment

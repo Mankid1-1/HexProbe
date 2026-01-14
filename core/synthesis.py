@@ -29,9 +29,16 @@ class HexProbeOrchestrator:
         Ask all agents to approve or flag a finding
         """
         approvals = {}
+        result_payload = result
+        if hasattr(result, "findings"):
+            result_payload = {
+                "findings": result.findings,
+                "severity": result.severity,
+                "repro": getattr(result, "repro", None),
+            }
         for agent in self.agents:
             try:
-                approvals[agent.name] = agent.approve(result)
+                approvals[agent.name] = agent.approve(result_payload)
             except Exception:
                 approvals[agent.name] = False
         return approvals

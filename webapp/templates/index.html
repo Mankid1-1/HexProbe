@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HexProbe Mission Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">HexProbe Mission Control</p>
+        <h1>Coordinate your multi-agent repo probes.</h1>
+        <p class="subtitle">
+          Register repositories, choose probes, and review agent approvals from a single
+          command center.
+        </p>
+      </div>
+      <div class="hero-card">
+        <div>
+          <span class="label">Repositories</span>
+          <span class="value" id="repo-count">{{ repos|length }}</span>
+        </div>
+        <div>
+          <span class="label">Recent runs</span>
+          <span class="value" id="run-count">{{ runs|length }}</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid">
+        <div class="panel">
+          <h2>Register a repository</h2>
+          <form id="repo-form">
+            <label>
+              Repo name
+              <input type="text" name="name" placeholder="Marketing Site" required />
+            </label>
+            <label>
+              Local path
+              <input type="text" name="path" placeholder="/Users/hexprobe/marketing" required />
+            </label>
+            <label>
+              Notes
+              <textarea name="notes" placeholder="High priority, customer-facing"></textarea>
+            </label>
+            <button type="submit">Add repo</button>
+          </form>
+          <div class="hint">Paths are validated on the server before probe runs.</div>
+        </div>
+
+        <div class="panel">
+          <h2>Launch a probe</h2>
+          <form id="run-form">
+            <label>
+              Repository
+              <select name="repo_id" id="repo-select" required>
+                <option value="" disabled selected>Select a repo</option>
+                {% for repo in repos %}
+                <option value="{{ repo.id }}">{{ repo.name }} — {{ repo.path }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>
+              Probe
+              <select name="probe_key" required>
+                {% for key, probe in probes.items() %}
+                <option value="{{ key }}">{{ probe.name }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <button type="submit">Run probe</button>
+          </form>
+          <div class="hint">Probe results include AI-assisted patch suggestions.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Agent roster</h2>
+        <div class="chips">
+          {% for agent in agents %}
+          <div class="chip">
+            <span class="chip-title">{{ agent.name }}</span>
+            <span class="chip-subtitle">{{ agent.domains | join(', ') }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Recent probe runs</h2>
+          <button class="ghost" id="refresh">Refresh</button>
+        </div>
+        <div id="runs" class="runs">
+          {% if runs %}
+          {% for run in runs %}
+          <div class="run-card">
+            <div class="run-header">
+              <div>
+                <span class="run-title">{{ run.repo_name }}</span>
+                <span class="run-subtitle">{{ run.probe_name }}</span>
+              </div>
+              <span class="badge badge-{{ run.result.severity }}">{{ run.result.severity }}</span>
+            </div>
+            <div class="run-body">
+              <div class="run-section">
+                <h3>Findings</h3>
+                <ul>
+                  {% for finding in run.result.findings %}
+                  <li>
+                    <strong>{{ finding.category }}</strong> — {{ finding.message }}
+                    {% if finding.location %}<em>{{ finding.location }}</em>{% endif %}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="run-section">
+                <h3>Agent approvals</h3>
+                <ul>
+                  {% for name, approved in run.approvals.items() %}
+                  <li class="approval">
+                    <span>{{ name }}</span>
+                    <span class="badge {{ 'badge-pass' if approved else 'badge-fail' }}">
+                      {{ 'Approved' if approved else 'Flagged' }}
+                    </span>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="empty">No probes yet. Launch a run to get started.</p>
+          {% endif %}
+        </div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

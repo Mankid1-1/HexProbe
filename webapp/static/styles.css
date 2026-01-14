@@ -1,0 +1,285 @@
+:root {
+  color-scheme: light;
+  --bg: #0f172a;
+  --card: #111827;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-dark: #0ea5e9;
+  --panel: #1e293b;
+  --border: #334155;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  color: var(--text);
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 8vw 20px;
+  gap: 24px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0 0 12px;
+}
+
+.subtitle {
+  max-width: 540px;
+  color: var(--muted);
+}
+
+.hero-card {
+  background: var(--panel);
+  padding: 20px 24px;
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+  min-width: 220px;
+  border: 1px solid var(--border);
+}
+
+.label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+main {
+  padding: 0 8vw 48px;
+  display: grid;
+  gap: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.panel {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+input,
+select,
+textarea {
+  background: #0f172a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-dark);
+  color: #0b1120;
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.hint {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  background: #0f172a;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  min-width: 180px;
+}
+
+.chip-title {
+  font-weight: 700;
+  display: block;
+}
+
+.chip-subtitle {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.runs {
+  display: grid;
+  gap: 16px;
+}
+
+.run-card {
+  background: #0b1120;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.run-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.run-title {
+  font-weight: 700;
+  display: block;
+}
+
+.run-subtitle {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.run-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.run-section h3 {
+  margin-top: 0;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.run-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.approval {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid transparent;
+}
+
+.badge-info {
+  background: #0ea5e9;
+  color: #0b1120;
+}
+
+.badge-low {
+  background: #38bdf8;
+  color: #0b1120;
+}
+
+.badge-medium {
+  background: #f59e0b;
+  color: #0b1120;
+}
+
+.badge-high,
+.badge-critical {
+  background: #f97316;
+  color: #0b1120;
+}
+
+.badge-pass {
+  background: #22c55e;
+  color: #0b1120;
+}
+
+.badge-fail {
+  background: #ef4444;
+  color: #0b1120;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

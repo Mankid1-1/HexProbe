@@ -26,7 +26,15 @@ class HexProbeOrchestrator:
 
     def evaluate_with_agents(self, result):
         """
-        Ask all agents to approve or flag a finding
+        Collect approvals from all configured agents for a probe result.
+        
+        If `result` has a `findings` attribute, a payload containing `findings`, `severity`, and `repro` (if present) is passed to each agent's `approve` method; otherwise the raw `result` is passed. Each agent's approval is recorded as the boolean returned by `approve`; if an agent raises an exception its approval is recorded as `False`.
+        
+        Parameters:
+            result: Probe result object or any object representing a probe outcome. May have attributes `findings`, `severity`, and optionally `repro`.
+        
+        Returns:
+            dict: Mapping from agent name (str) to approval (`True` if the agent approved, `False` otherwise).
         """
         approvals = {}
         result_payload = result

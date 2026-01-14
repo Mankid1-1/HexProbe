@@ -4,7 +4,15 @@ from pathlib import Path
 
 def run(repo, ctx=None, artifacts=None):
     """
-    Static analysis probe for linting, type checking, and boundary input detection
+    Perform static analysis on a repository: run linting and type checking, and detect unvalidated input in Python files.
+    
+    Parameters:
+        repo (str | pathlib.Path): Path to the repository to analyze.
+    
+    Returns:
+        ProbeResult: An object containing:
+            - findings: a list of dictionaries describing issues; each entry includes `name`, `severity`, `message`, and optionally `path`.
+            - severity: the overall severity string ("info", "low", "medium", "high", or "critical") representing the highest-severity finding.
     """
     findings = []
 

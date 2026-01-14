@@ -8,10 +8,10 @@ DB_PATH = os.path.join(os.getcwd(), "hexprobe_knowledge.db")
 def get_conn():
     return sqlite3.connect(DB_PATH)
 
+conn = get_conn()
+
 def init_db():
-    if init_knowledge_schema():
-        return
-    conn = get_conn()
+    init_knowledge_schema()
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS patterns (
@@ -33,6 +33,5 @@ def init_db():
         created_at TEXT
     )""")
     conn.commit()
-    conn.close()
 
 init_db()

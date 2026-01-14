@@ -1,14 +1,15 @@
-import os
 import sqlite3
+from pathlib import Path
 
 from core.appwrite_backend import init_global_schema
 
-GLOBAL_DB_PATH = os.path.join(os.getcwd(), "global.db")
+GLOBAL_DB_PATH = Path(__file__).resolve().parent / "global.db"
 
 def get_conn():
     """
     Returns connection to central memory database shared across repos
     """
+    GLOBAL_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     return sqlite3.connect(GLOBAL_DB_PATH)
 
 def init_global_db():

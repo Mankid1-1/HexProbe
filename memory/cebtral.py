@@ -1,5 +1,7 @@
-import sqlite3
 import os
+import sqlite3
+
+from core.appwrite_backend import init_global_schema
 
 GLOBAL_DB_PATH = os.path.join(os.getcwd(), "global.db")
 
@@ -7,12 +9,12 @@ def get_conn():
     """
     Returns connection to central memory database shared across repos
     """
-    conn = sqlite3.connect(GLOBAL_DB_PATH)
-    return conn
-
-conn = get_conn()
+    return sqlite3.connect(GLOBAL_DB_PATH)
 
 def init_global_db():
+    if init_global_schema():
+        return
+    conn = get_conn()
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS global_patterns (
@@ -36,5 +38,6 @@ def init_global_db():
     )
     """)
     conn.commit()
+    conn.close()
 
 init_global_db()

@@ -1,40 +1,60 @@
 # HexProbe
 
-HexProbe is a **self-evolving, multi-agent repository auditing system** designed to detect, analyze, and suggest fixes for code issues across multiple repos.  
+HexProbe is an **advanced multi-agent, self-learning repository auditing system** designed to
+detect, analyze, and resolve code issues automatically. It combines static analysis, fuzzing,
+performance and chaos probes with assisted patch suggestions and cross-repo memory to learn
+from prior fixes and improve over time.
 
-## Features
+## What it does
 
-- Multi-agent approval system
-- Static analysis, fuzz testing, performance, chaos probes
-- Automatic probe generation from memory and past bugs
-- Persistent pattern learning and cross-repo memory
-- AI-assisted patch synthesis
-- Aging and pruning of stale probes
+- Runs multi-agent approval across probe findings
+- Executes static, fuzz, performance, and chaos probes
+- Generates new probes based on learned patterns
+- Records findings and lineage for long-term memory
+- Synthesizes patch suggestions for detected issues
+- Prunes stale probes and patterns to keep memory fresh
 
-## Folder Structure
+## Repository layout
 
-- `agents/` – HexProbe agents and approval logic
-- `probes/` – All probe types and supporting modules
-- `knowledge/` – Persistent learning and pattern analysis
-- `memory/` – Cross-repo memory storage
-- `maintenance/` – Aging and pruning system
-- `ai/` – AI-assisted patch synthesis
-- `core/` – Orchestrator coordinating probes, agents, AI, and memory
+- `agents/` – agent approval logic
+- `probes/` – probe implementations (static/fuzz/perf/chaos + generated)
+- `knowledge/` – local pattern learning
+- `memory/` – cross-repo memory storage
+- `maintenance/` – aging and pruning routines
+- `ai/` – patch synthesis helpers
+- `core/` – orchestrator and shared storage utilities
 
-## Getting Started
+## Quickstart
 
-1. Clone the repo
-2. Install dependencies (e.g., Python 3.10+)
-3. Configure Appwrite variables in `.env` (see `.env.example`)
-4. Configure `hexprobe.yaml` for your pipeline
-5. Run orchestration via `core/synthesis.py`
+1. **Install dependencies**
+   ```bash
+   poetry install
+   ```
+2. **Run a probe cycle programmatically**
+   ```python
+   from core.synthesis import HexProbeOrchestrator
+   from probes.static.surface_sweep import surface_sweep
 
-## Appwrite Configuration
+   orchestrator = HexProbeOrchestrator()
+   result = orchestrator.run_full_cycle(surface_sweep, repo=".")
+   print(result["result"].findings)
+   ```
+3. **Optional: configure the pipeline**
+   Edit `hexprobe.yaml` to control which probes run in your pipeline.
 
-HexProbe uses Appwrite for backend services. Configure the following environment
-variables (copy `.env.example` to `.env` and update as needed):
+## Configuration
 
-- `APPWRITE_ENDPOINT`
-- `APPWRITE_PROJECT_ID`
-- `APPWRITE_DATABASE_ID`
-- `APPWRITE_API_KEY` (server-only secret; never commit)
+HexProbe uses local SQLite databases for knowledge and global memory.
+
+- Data directory defaults to `~/.hexprobe`
+- Override with `HEXPROBE_DATA_DIR=/path/to/dir`
+
+Databases created:
+
+- `hexprobe_knowledge.db` (local knowledge)
+- `global.db` (cross-repo memory)
+
+## Notes
+
+- No external backend is required; everything runs locally by default.
+- If you embed HexProbe in CI, set `HEXPROBE_DATA_DIR` to a writable path.

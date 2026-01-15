@@ -1,5 +1,5 @@
 import subprocess
-from hexprobe.probes.meta import ProbeResult
+from probes.meta import ProbeResult
 
 def run(repo, ctx=None, artifacts=None):
     """

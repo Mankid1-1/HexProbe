@@ -1,23 +1,24 @@
-from knowledge.store import conn
+from knowledge.store import get_conn
 from datetime import datetime
 
 def record_lineage(probe_id, pattern_id, bug_id, fix_commit, repo):
     """
     Records the origin of each auto-generated probe
     """
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT OR REPLACE INTO probe_lineage (probe_id, pattern_id, bug_id, fix_commit, originating_repo, created_at) VALUES (?,?,?,?,?,?)",
-        (probe_id, pattern_id, bug_id, fix_commit, repo, datetime.utcnow().isoformat())
-    )
-    conn.commit()
+    with get_conn() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT OR REPLACE INTO probe_lineage (probe_id, pattern_id, bug_id, fix_commit, originating_repo, created_at) VALUES (?,?,?,?,?,?)",
+            (probe_id, pattern_id, bug_id, fix_commit, repo, datetime.utcnow().isoformat()),
+        )
 
 def get_probe_lineage(probe_id):
-    cursor = conn.cursor()
-    row = cursor.execute(
-        "SELECT probe_id, pattern_id, bug_id, fix_commit, originating_repo, created_at FROM probe_lineage WHERE probe_id=?",
-        (probe_id,)
-    ).fetchone()
+    with get_conn() as conn:
+        cursor = conn.cursor()
+        row = cursor.execute(
+            "SELECT probe_id, pattern_id, bug_id, fix_commit, originating_repo, created_at FROM probe_lineage WHERE probe_id=?",
+            (probe_id,),
+        ).fetchone()
     if row:
         return {
             "probe_id": row[0],

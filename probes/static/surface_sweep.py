@@ -1,5 +1,5 @@
 import subprocess
-from hexprobe.probes.meta import Finding, ProbeResult
+from probes.meta import Finding, ProbeResult
 from pathlib import Path
 
 def run(repo, ctx=None, artifacts=None):

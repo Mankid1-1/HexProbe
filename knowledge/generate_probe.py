@@ -1,4 +1,4 @@
-from hexprobe.probes.meta import Finding, ProbeResult
+from probes.meta import Finding, ProbeResult
 from knowledge.lineage import record_lineage
 import uuid
 from datetime import datetime

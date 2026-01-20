@@ -40,14 +40,22 @@ class HexProbeOrchestrator:
         """
         Ensure result payload exposes attribute access for agents
         """
+        def normalize_findings(findings):
+            if findings is None:
+                return []
+            if isinstance(findings, list):
+                return findings
+            return [findings]
+
         if isinstance(result, ResultPayload):
+            result.findings = normalize_findings(result.findings)
             return result
         if isinstance(result, dict):
             rationale = result.get("rationale")
             if rationale is None:
                 rationale = ""
             return ResultPayload(
-                findings=result.get("findings"),
+                findings=normalize_findings(result.get("findings")),
                 severity=result.get("severity", "info"),
                 repro=result.get("repro"),
                 rationale=rationale,
@@ -59,7 +67,7 @@ class HexProbeOrchestrator:
         if rationale is None:
             rationale = ""
         return ResultPayload(
-            findings=getattr(result, "findings", None),
+            findings=normalize_findings(getattr(result, "findings", None)),
             severity=getattr(result, "severity", "info"),
             repro=getattr(result, "repro", None),
             rationale=rationale,
@@ -85,7 +93,11 @@ class HexProbeOrchestrator:
         result_payload = self.normalize_result_payload(result)
         patches = []
         for finding in result_payload.findings:
-            patch = synthesize_patch(finding, context=context)
+            if isinstance(finding, dict):
+                patch_input = finding
+            else:
+                patch_input = {"category": "general", "message": str(finding)}
+            patch = synthesize_patch(patch_input, context=context)
             patches.append(patch)
         return patches
 

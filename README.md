@@ -33,13 +33,18 @@ from prior fixes and improve over time.
 2. **Run a probe cycle programmatically**
    ```python
    from core.synthesis import HexProbeOrchestrator
-   from probes.static.surface_sweep import surface_sweep
+   from probes.static.surface_sweep import run as surface_sweep
 
    orchestrator = HexProbeOrchestrator()
    result = orchestrator.run_full_cycle(surface_sweep, repo=".")
    print(result["result"].findings)
    ```
-3. **Optional: configure the pipeline**
+3. **Launch the GUI**
+   ```bash
+   python -m gui
+   ```
+   The GUI includes probe selection, real-time status, and exportable JSON reports.
+4. **Optional: configure the pipeline**
    Edit `hexprobe.yaml` to control which probes run in your pipeline.
 
 ## Configuration
